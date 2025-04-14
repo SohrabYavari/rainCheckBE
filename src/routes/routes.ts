@@ -22,5 +22,5 @@ export function patchRoutes(fastify: FastifyInstance) {
 }
 
 export function postRoutes(fastify: FastifyInstance){
-  fastify.post("/api/users/:username/events",postAnEvent);
+  fastify.post("/api/events",postAnEvent);
 }

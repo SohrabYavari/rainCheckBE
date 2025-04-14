@@ -1,5 +1,5 @@
 import Fastify from "fastify";
-import { getRoutes, patchRoutes ,postRoutes} from "../routes/routes";
+import { getRoutes, patchRoutes, postRoutes } from "../routes/routes";
 import cors from "@fastify/cors";
 
 const server = Fastify({ logger: true });
@@ -13,6 +13,6 @@ server.register(cors, {
 //? eg. GET, POST, PATCH, DELETE
 server.register(getRoutes);
 server.register(patchRoutes);
-server.register(postRoutes)
+server.register(postRoutes);
 
 export default server;

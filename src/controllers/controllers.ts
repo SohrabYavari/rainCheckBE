@@ -7,10 +7,11 @@ import {
   fetchSpecificEvent,
   fetchEventByUser,
 } from "../models/models";
-import { TEventsData } from "../types/TData";
-import { TUsersData } from "../types/TData";
+import { TEventsData, TUsersData } from "../types/TData";
 import { addEvent } from "../models/models";
 
+
+//! GET ENDPOINTS 
 export async function getAllUsers(
   request: FastifyRequest,
   reply: FastifyReply
@@ -82,15 +83,15 @@ export async function markHostFlaked(
 }
 
 export async function postAnEvent(
-  request: FastifyRequest<{ Params: TUsersData; Body: TEventsData }>,
+  request: FastifyRequest<{ Body: TEventsData }>,
   reply: FastifyReply
 ) {
-  const { username } = request.params;
   const {
     title,
     description,
     date,
     location,
+    created_by,
     invited,
     host_flaked,
     invitee_flaked,
@@ -101,7 +102,7 @@ export async function postAnEvent(
     description,
     date,
     location,
-    username,
+    created_by,
     invited,
     host_flaked,
     invitee_flaked

@@ -30,6 +30,7 @@ export async function fetchEventByUser(created_by: string) {
     return rows;
   } catch (error) {
     console.error("Error fetching users events");
+    throw error
   }
 }
 
@@ -51,7 +52,8 @@ export async function inviteeFlaked(event_id: number) {
     );
     return flaked;
   } catch (error) {
-    console.error("Error patching event details");
+    console.error("Error patching event details", error);
+    throw error;
   }
 }
 
@@ -64,20 +66,24 @@ export async function hostFlaked(event_id: number) {
     return flaked;
   } catch (error) {
     console.error("Error patching event details");
+    throw error
   }
 }
 
 export async function addEvent(
-  title:string, 
-  description:string, 
-  date:string, 
-  location:string, 
-  username:string, 
-  invited:string, 
-  host_flaked:number, 
-  invitee_flaked:number){ 
-try{ 
-  const newEvent = await db.query(`
+  
+  title: string,
+  description: string,
+  date: string,
+  location: string,
+  created_by: string,
+  invited: string,
+  host_flaked: number,
+  invitee_flaked: number
+) {
+  try {
+    const [result] = await db.execute(
+      `
     INSERT INTO events (
       title, 
       description, 
@@ -89,11 +95,25 @@ try{
       invitee_flaked
       )
       VALUES(?,?,?,?,?,?,?,?)
-    `,[title,description,date,location,username,invited,host_flaked,invitee_flaked]);
+    `,
+      [
+        title,
+        description,
+        date,
+        location,
+        created_by,
+        invited,
+        host_flaked,
+        invitee_flaked,
+      ]
+    );
 
-    return newEvent;
-  } 
-  catch (error) {
-    console.error("Error creating event");
+    const insertId = (result as any).insertId
+    
+    const[rows] = await db.query('SELECT * FROM events WHERE event_id = ?', [insertId]);
+    return rows[0];
+  } catch (error) {
+    console.error("Error creating event", error);
+    throw error 
   }
 }
