@@ -47,7 +47,7 @@ export async function fetchEvents() {
 export async function inviteeFlaked(event_id: number) {
   try {
     const flaked = await db.query(
-      `UPDATE events SET invitee_flaked = 1 WHERE id = ?`,
+      `UPDATE events SET invitee_flaked = 1 WHERE event_id = ?`,
       [event_id]
     );
     return flaked;
@@ -60,7 +60,7 @@ export async function inviteeFlaked(event_id: number) {
 export async function hostFlaked(event_id: number) {
   try {
     const flaked = await db.query(
-      `UPDATE events SET host_flaked = 1 WHERE id = ?`,
+      `UPDATE events SET host_flaked = 1 WHERE event_id = ?`,
       [event_id]
     );
     return flaked;

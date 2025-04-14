@@ -13,12 +13,12 @@ import {
 export function getRoutes(fastify: FastifyInstance) {
   fastify.get("/api/users", getAllUsers);
   fastify.get("/api/events", getAllEvents);
-  fastify.get("/api/events/:eventId", getEvent);
+  fastify.get("/api/events/:event_id", getEvent);
   fastify.get("/api/users/:created_by/events", getEventByUser);
 }
 
 export function patchRoutes(fastify: FastifyInstance) {
-  fastify.patch("/api/events/:eventId", markInviteeFlaked || markHostFlaked);
+  fastify.patch("/api/events/:event_id", markInviteeFlaked || markHostFlaked);
 }
 
 export function postRoutes(fastify: FastifyInstance){
