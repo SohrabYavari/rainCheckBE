@@ -7,6 +7,7 @@ import {
   markHostFlaked,
   getEvent,
   getEventByUser,
+  postAnEvent
 } from "../controllers/controllers";
 
 export function getRoutes(fastify: FastifyInstance) {
@@ -18,4 +19,8 @@ export function getRoutes(fastify: FastifyInstance) {
 
 export function patchRoutes(fastify: FastifyInstance) {
   fastify.patch("/api/events/:eventId", markInviteeFlaked || markHostFlaked);
+}
+
+export function postRoutes(fastify: FastifyInstance){
+  fastify.post("/api/users/:username/events",postAnEvent);
 }

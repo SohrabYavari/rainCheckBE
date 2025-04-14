@@ -8,6 +8,8 @@ import {
   fetchEventByUser,
 } from "../models/models";
 import { TEventsData } from "../types/TData";
+import { TUsersData } from "../types/TData";
+import { addEvent } from "../models/models";
 
 export async function getAllUsers(
   request: FastifyRequest,
@@ -67,7 +69,7 @@ export async function markInviteeFlaked(
 ) {
   const { event_id } = request.params;
   const result = await inviteeFlaked(event_id);
-  return reply.code(200).send({ success: true, data: result });
+  return reply.code(201).send({ success: true, data: result });
 }
 
 export async function markHostFlaked(
@@ -76,11 +78,33 @@ export async function markHostFlaked(
 ) {
   const { event_id } = request.params;
   const result = await hostFlaked(event_id);
-  return reply.code(200).send({ success: true, data: result });
+  return reply.code(201).send({ success: true, data: result });
 }
 
-// export async function postAnEvent(
-//request: FasitfyRequest<{Params:TUserData Body: TEventData}>,reply: FastifyReply)  
-// {const {username}=request.params;
-// const
-// const new_event = await addNewEvent() }
+export async function postAnEvent(
+  request: FastifyRequest<{ Params: TUsersData; Body: TEventsData }>,
+  reply: FastifyReply
+) {
+  const { username } = request.params;
+  const {
+    title,
+    description,
+    date,
+    location,
+    invited,
+    host_flaked,
+    invitee_flaked,
+  } = request.body;
+
+  const event = await addEvent(
+    title,
+    description,
+    date,
+    location,
+    username,
+    invited,
+    host_flaked,
+    invitee_flaked
+  );
+  return reply.code(201).send({ event });
+}

@@ -66,3 +66,34 @@ export async function hostFlaked(event_id: number) {
     console.error("Error patching event details");
   }
 }
+
+export async function addEvent(
+  title:string, 
+  description:string, 
+  date:string, 
+  location:string, 
+  username:string, 
+  invited:string, 
+  host_flaked:number, 
+  invitee_flaked:number){ 
+try{ 
+  const newEvent = await db.query(`
+    INSERT INTO events (
+      title, 
+      description, 
+      date, 
+      location, 
+      created_by, 
+      invited, 
+      host_flaked, 
+      invitee_flaked
+      )
+      VALUES(?,?,?,?,?,?,?,?)
+    `,[title,description,date,location,username,invited,host_flaked,invitee_flaked]);
+
+    return newEvent;
+  } 
+  catch (error) {
+    console.error("Error creating event");
+  }
+}
